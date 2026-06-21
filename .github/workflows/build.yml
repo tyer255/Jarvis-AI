@@ -17,19 +17,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         
-    - name: Download Gradle Wrapper
-      run: |
-        mkdir -p gradle/wrapper
-        wget https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.properties -O gradle/wrapper/gradle-wrapper.properties
-        wget https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.jar -O gradle/wrapper/gradle-wrapper.jar
-        wget https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradlew -O gradlew
-        chmod +x gradlew
-
-    - name: Create local.properties
-      run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
       
     - name: Build Debug APK
-      run: ./gradlew assembleDebug --no-daemon
+      run: gradle assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
       
     - name: Upload APK
       uses: actions/upload-artifact@v4
