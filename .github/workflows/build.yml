@@ -20,8 +20,11 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
       
+    - name: Generate Gradle Wrapper
+      run: gradle wrapper --gradle-version 8.5
+      
     - name: Build Debug APK
-      run: gradle assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
+      run: ./gradlew assembleDebug --no-daemon
       
     - name: Upload APK
       uses: actions/upload-artifact@v4
