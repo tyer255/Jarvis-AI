@@ -135,6 +135,12 @@ class MainActivity : Activity(), TextToSpeech.OnInitListener {
                 })
                 startListening()
             }
+            "type" in command -> {
+                val text = command.replace("type ", "").trim()
+                speak("Typing $text, Sir.")
+                JarvisAccessibilityService.instance?.typeText(text)
+                startListening()
+            }
             else -> {
                 speak("Samjha nahi Sir, phir se try karein.")
                 startListening()
