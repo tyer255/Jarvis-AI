@@ -90,6 +90,26 @@ class MainActivity : Activity(), TextToSpeech.OnInitListener {
                 speak("Yes Sir, main tumhari kaise madad karoon?")
                 startListening()
             }
+            "scroll down" in command -> {
+                speak("Scrolling down, Sir.")
+                JarvisAccessibilityService.instance?.performScrollDown()
+                startListening()
+            }
+            "scroll up" in command -> {
+                speak("Scrolling up, Sir.")
+                JarvisAccessibilityService.instance?.performScrollUp()
+                startListening()
+            }
+            "go back" in command || "back" in command -> {
+                speak("Going back, Sir.")
+                JarvisAccessibilityService.instance?.goBack()
+                startListening()
+            }
+            "go home" in command || "home" in command -> {
+                speak("Going home, Sir.")
+                JarvisAccessibilityService.instance?.goHome()
+                startListening()
+            }
             "call" in command -> {
                 val name = command.replace("call ", "").trim()
                 speak("Calling $name, Sir.")
@@ -101,6 +121,7 @@ class MainActivity : Activity(), TextToSpeech.OnInitListener {
                 } else {
                     ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CALL_PHONE), 2)
                 }
+                startListening()
             }
             "open" in command -> {
                 val appName = command.replace("open ", "").trim()
@@ -108,10 +129,11 @@ class MainActivity : Activity(), TextToSpeech.OnInitListener {
                 openApp(appName)
             }
             "wi-fi" in command || "wifi" in command -> {
-                speak("Settings khol raha hoon, Sir. Wi-Fi yahan toggle karein.")
+                speak("Settings khol raha hoon, Sir.")
                 startActivity(Intent(Settings.ACTION_WIFI_SETTINGS).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 })
+                startListening()
             }
             else -> {
                 speak("Samjha nahi Sir, phir se try karein.")
@@ -121,12 +143,12 @@ class MainActivity : Activity(), TextToSpeech.OnInitListener {
     }
 
     private fun openApp(appName: String) {
-        val packageName = when {
-            "whatsapp" in appName -> "com.whatsapp"
-            "youtube" in appName -> "com.google.android.youtube"
-            "camera" in appName -> "com.android.camera2"
-            "instagram" in appName -> "com.instagram.android"
-            "chrome" in appName -> "com.android.chrome"
+        val packageName = when (appName) {
+            "whatsapp" -> "com.whatsapp"
+            "youtube" -> "com.google.android.youtube"
+            "camera" -> "com.android.camera2"
+            "instagram" -> "com.instagram.android"
+            "chrome" -> "com.android.chrome"
             else -> null
         }
 
